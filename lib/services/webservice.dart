@@ -5,15 +5,13 @@ import 'package:mvvm_news_api/utils/constants.dart';
 import '../models/newsArticle.dart';
 
 class WebService {
-  Future<List<NewsArticle>> fetchHeadlineByKeyword(String keyword) {
-    return _helperMethod(Constants.headlinesFor(keyword));
-  }
+  Future<List<NewsArticle>> fetchHeadlineByKeyword(String keyword) =>
+      _helperFetchMethod(Constants.headlinesFor(keyword));
 
-  Future<List<NewsArticle>> fetchTopHeadlines() async {
-    return _helperMethod(Constants.topHeadlineUrl);
-  }
+  Future<List<NewsArticle>> fetchTopHeadlines() async =>
+      _helperFetchMethod(Constants.topHeadlineUrl);
 
-  Future<List<NewsArticle>> _helperMethod(url) async {
+  Future<List<NewsArticle>> _helperFetchMethod(url) async {
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
