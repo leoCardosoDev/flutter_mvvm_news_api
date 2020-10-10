@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mvvm_news_api/viewmodels/newsArticleListViewModel.dart';
+import 'package:provider/provider.dart';
+
+import './pages/newsList.dart';
 
 void main() {
   runApp(MyApp());
@@ -9,15 +13,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter MVVM',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Latest News'),
-        ),
-        body: Center(
-          child: Container(
-            child: Text('MVVM is here!'),
-          ),
-        ),
+      home: ChangeNotifierProvider(
+        create: (_) => NewsArticleListViewModel(),
+        child: NewsList(),
       ),
     );
   }
