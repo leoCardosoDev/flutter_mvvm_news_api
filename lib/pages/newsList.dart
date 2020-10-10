@@ -20,7 +20,9 @@ class NewsList extends StatelessWidget {
             leading: Container(
               width: mediaQuery.size.width * 0.25,
               height: mediaQuery.size.height * 0.25,
-              child: Image.network(article.urlToImage),
+              child: article.urlToImage == null
+                  ? Image.asset("assets/images/news.png")
+                  : Image.network(article.urlToImage),
             ),
             title: Text(article.title),
           );

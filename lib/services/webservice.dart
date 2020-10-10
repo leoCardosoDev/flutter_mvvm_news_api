@@ -1,13 +1,19 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:mvvm_news_api/utils/constants.dart';
 import '../models/newsArticle.dart';
 
 class WebService {
-  Future<List<NewsArticle>> fetchTopHeadlines() async {
-    String url =
-        'https://newsapi.org/v2/top-headlines?country=us&apiKey=59f3fb9b339c4f1891cbc2316468de81';
+  Future<List<NewsArticle>> fetchHeadlineByKeyword(String keyword) {
+    return _helperMethod(Constants.headlinesFor(keyword));
+  }
 
+  Future<List<NewsArticle>> fetchTopHeadlines() async {
+    return _helperMethod(Constants.topHeadlineUrl);
+  }
+
+  Future<List<NewsArticle>> _helperMethod(url) async {
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
