@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+
 import '../../viewmodels/newsArticleViewModel.dart';
 
 class NewList extends StatelessWidget {
   final List<NewsArticleViewModel> articles;
-  NewList({this.articles});
+  final Function(NewsArticleViewModel article) onSelected;
+
+  NewList({this.articles, this.onSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -13,6 +16,9 @@ class NewList extends StatelessWidget {
       itemBuilder: (context, index) {
         final article = articles[index];
         return ListTile(
+          onTap: () {
+            this.onSelected(article);
+          },
           leading: Container(
             width: mediaQuery.size.width * 0.25,
             height: mediaQuery.size.height * 0.25,
