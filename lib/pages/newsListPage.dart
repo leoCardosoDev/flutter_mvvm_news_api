@@ -12,6 +12,30 @@ class NewsListPage extends StatefulWidget {
 class _NewsListPageState extends State<NewsListPage> {
   final _textController = TextEditingController();
   @override
+  void initState() {
+    super.initState();
+
+    Provider.of<NewsArticleListViewModel>(context, listen: false)
+        .populateTopHeadlines();
+  }
+
+  Widget _buildList(NewsArticleListViewModel viewModelList) {
+    switch (viewModelList.loadingStatus) {
+      case LoadingStatus.searching:
+        return Align(child: CircularProgressIndicator());
+        break;
+      case LoadingStatus.empty:
+        return Center(child: Text("No result found"));
+        break;
+      case LoadingStatus.completed:
+        return Expanded(child: NewList(articles: viewModelList.articles));
+        break;
+      default:
+        return CircularProgressIndicator();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<NewsArticleListViewModel>(context);
     return Scaffold(
@@ -22,7 +46,9 @@ class _NewsListPageState extends State<NewsListPage> {
         children: [
           TextField(
             controller: _textController,
-            onSubmitted: (value) {},
+            onSubmitted: (value) {
+              if (value.isNotEmpty) viewModel.populateSearch(value);
+            },
             decoration: InputDecoration(
               labelText: "Buscar notícias",
               prefixIcon: Icon(Icons.search),
@@ -33,7 +59,7 @@ class _NewsListPageState extends State<NewsListPage> {
             ),
           ),
           SizedBox(height: 10),
-          Expanded(child: NewList(articles: viewModel.articles)),
+          _buildList(viewModel),
         ],
       ),
     );
